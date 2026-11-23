@@ -105,3 +105,4 @@ class Cliente(Entidad):
     def describir(self):
         """Devuelve una representacion legible con los datos del cliente."""
         return f"Cliente [{self._id}] {self.__nombre} | Correo: {self.__correo} | Tel: {self.__telefono}"
+
