@@ -18,15 +18,15 @@ class Servicio(Entidad):
         try:
             super().__init__(id_servicio)
         except ValueError as error_original:
-            raise ErrorParametroInvalido(f"ID de servicio inválido: '{id_servicio}'.") from error_original
+            raise ErrorParametroInvalido(f"ID de servicio invalido: '{id_servicio}'.") from error_original
 
         # Validamos el nombre del servicio
         if not isinstance(nombre, str) or not nombre.strip():
-            raise ErrorParametroInvalido("El nombre del servicio no puede estar vacío.")
+            raise ErrorParametroInvalido("El nombre del servicio no puede estar vacio.")
 
         # Validamos que la tarifa base sea un número positivo mayor a cero
         if not isinstance(tarifa_base, (int, float)) or tarifa_base <= 0:
-            raise ErrorParametroInvalido(f"La tarifa base debe ser un número mayor a 0 (recibido: {tarifa_base}).")
+            raise ErrorParametroInvalido(f"La tarifa base debe ser un numero mayor a 0 (recibido: {tarifa_base}).")
 
         # Validamos que la disponibilidad sea un valor booleano
         if not isinstance(disponible, bool):
@@ -49,7 +49,7 @@ class Servicio(Entidad):
 
     @property
     def disponible(self):
-        """Retorna True si el servicio está disponible para reservar."""
+        """Retorna True si el servicio esta disponible para reservar."""
         return self._disponible
 
     @disponible.setter
@@ -62,16 +62,16 @@ class Servicio(Entidad):
     def verificar_disponibilidad(self):
         """Lanza una excepción si el servicio no se encuentra disponible."""
         if not self._disponible:
-            raise ErrorServicioNoDisponible(f"El servicio '{self._nombre}' ({self._id}) no está disponible.")
+            raise ErrorServicioNoDisponible(f"El servicio '{self._nombre}' ({self._id}) no esta disponible.")
 
     @abstractmethod
     def calcular_subtotal(self, duracion_horas):
-        """Método polimórfico que cada servicio sobrescribe para calcular su costo base según sus reglas."""
+        """Metodo polimorfico que cada servicio sobrescribe para calcular su costo base segun sus reglas."""
         pass
 
     def calcular_costo(self, *args, **kwargs):
         """
-        Método sobrecargado para calcular el costo final de un servicio.
+        Metodo sobrecargado para calcular el costo final de un servicio.
         Soporta múltiples formas de invocación:
         1. calcular_costo(duracion) -> Costo base sin descuentos ni impuestos.
         2. calcular_costo(duracion, descuento) -> Aplica porcentaje de descuento (0 a 50).
@@ -96,11 +96,11 @@ class Servicio(Entidad):
             descuento = kwargs.get("descuento", 0.0)
             impuesto = kwargs.get("impuesto", 0.0)
         else:
-            raise ErrorCalculoCosto("Faltan parámetros obligatorios: se requiere al menos la duración en horas.")
+            raise ErrorCalculoCosto("Faltan parametros obligatorios: se requiere al menos la duracion en horas.")
 
         # Validamos que la duración sea numérica y positiva
         if not isinstance(duracion, (int, float)) or duracion <= 0:
-            raise ErrorCalculoCosto(f"La duración debe ser un número positivo (recibido: {duracion}).")
+            raise ErrorCalculoCosto(f"La duracion debe ser un numero positivo (recibido: {duracion}).")
 
         # Validamos que el descuento esté en un rango lógico (0% a 50%)
         if not isinstance(descuento, (int, float)) or not (0 <= descuento <= 50):
@@ -146,14 +146,14 @@ class ReservaSala(Servicio):
         return True
 
     def calcular_subtotal(self, duracion_horas):
-        """Polimorfismo: las salas con más de 20 personas tienen un recargo operativo del 15%."""
+        """Polimorfismo: las salas con mas de 20 personas tienen un recargo operativo del 15%."""
         subtotal = self._tarifa_base * duracion_horas
         if self._capacidad > 20:
             subtotal *= 1.15  # Recargo por logística y climatización de sala grande
         return round(subtotal, 2)
 
     def describir(self):
-        """Devuelve la descripción detallada de la sala."""
+        """Devuelve la descripcion detallada de la sala."""
         estado = "Disponible" if self._disponible else "No disponible"
         return (
             f"Sala [{self._id}] {self._nombre} | Capacidad: {self._capacidad} personas | "
@@ -162,7 +162,7 @@ class ReservaSala(Servicio):
 
 
 class AlquilerEquipo(Servicio):
-    """Servicio especializado para el alquiler de equipos tecnológicos."""
+    """Servicio especializado para el alquiler de equipos tecnologicos."""
 
     def __init__(self, id_servicio, nombre, tarifa_base, cantidad_unidades, deposito_seguridad, disponible=True):
         # Inicializamos los atributos comunes en Servicio
@@ -174,32 +174,32 @@ class AlquilerEquipo(Servicio):
         self.validar()
 
     def validar(self):
-        """Valida que haya al menos 1 unidad y que el depósito de seguridad no sea negativo."""
+        """Valida que haya al menos 1 unidad y que el deposito de seguridad no sea negativo."""
         if not isinstance(self._cantidad_unidades, int) or self._cantidad_unidades <= 0:
             raise ErrorParametroInvalido(
                 f"La cantidad de unidades debe ser un entero mayor a 0 (recibido: {self._cantidad_unidades})."
             )
         if not isinstance(self._deposito_seguridad, (int, float)) or self._deposito_seguridad < 0:
             raise ErrorParametroInvalido(
-                f"El depósito de seguridad no puede ser negativo (recibido: {self._deposito_seguridad})."
+                f"El deposito de seguridad no puede ser negativo (recibido: {self._deposito_seguridad})."
             )
         return True
 
     def calcular_subtotal(self, duracion_horas):
-        """Polimorfismo: multiplica tarifa por horas y unidades, sumando el depósito de seguridad."""
+        """Polimorfismo: multiplica tarifa por horas y unidades, sumando el deposito de seguridad."""
         return round((self._tarifa_base * duracion_horas * self._cantidad_unidades) + self._deposito_seguridad, 2)
 
     def describir(self):
-        """Devuelve la descripción detallada del alquiler de equipos."""
+        """Devuelve la descripcion detallada del alquiler de equipos."""
         estado = "Disponible" if self._disponible else "No disponible"
         return (
             f"Equipo [{self._id}] {self._nombre} | Unidades: {self._cantidad_unidades} | "
-            f"Depósito: ${self._deposito_seguridad:,.2f} | Tarifa: ${self._tarifa_base:,.2f}/h | Estado: {estado}"
+            f"Deposito: ${self._deposito_seguridad:,.2f} | Tarifa: ${self._tarifa_base:,.2f}/h | Estado: {estado}"
         )
 
 
 class AsesoriaEspecializada(Servicio):
-    """Servicio especializado para consultorías y asesorías técnicas de Software FJ."""
+    """Servicio especializado para consultorias y asesorias tecnicas de Software FJ."""
 
     NIVELES_VALIDOS = ("Basico", "Intermedio", "Experto")  # Niveles permitidos para el consultor
 
@@ -213,24 +213,24 @@ class AsesoriaEspecializada(Servicio):
         self.validar()
 
     def validar(self):
-        """Valida que la especialidad sea texto no vacío y que el nivel pertenezca a los permitidos."""
+        """Valida que la especialidad sea texto no vacio y que el nivel pertenezca a los permitidos."""
         if not isinstance(self._especialidad, str) or not self._especialidad.strip():
-            raise ErrorParametroInvalido("La especialidad de la asesoría no puede estar vacía.")
+            raise ErrorParametroInvalido("La especialidad de la asesoría no puede estar vacia.")
         if self._nivel not in self.NIVELES_VALIDOS:
             raise ErrorParametroInvalido(
-                f"Nivel '{self._nivel}' inválido. Niveles permitidos: {self.NIVELES_VALIDOS}."
+                f"Nivel '{self._nivel}' invalido. Niveles permitidos: {self.NIVELES_VALIDOS}."
             )
         return True
 
     def calcular_subtotal(self, duracion_horas):
-        """Polimorfismo: aplica un multiplicador según el nivel del consultor asignado."""
+        """Polimorfismo: aplica un multiplicador segun el nivel del consultor asignado."""
         factores = {"Basico": 1.0, "Intermedio": 1.25, "Experto": 1.5}
         return round(self._tarifa_base * duracion_horas * factores[self._nivel], 2)
 
     def describir(self):
-        """Devuelve la descripción detallada de la asesoría."""
+        """Devuelve la descripcion detallada de la asesoria."""
         estado = "Disponible" if self._disponible else "No disponible"
         return (
-            f"Asesoría [{self._id}] {self._nombre} | Área: {self._especialidad} ({self._nivel}) | "
+            f"Asesoria [{self._id}] {self._nombre} | Area: {self._especialidad} ({self._nivel}) | "
             f"Tarifa: ${self._tarifa_base:,.2f}/h | Estado: {estado}"
         )

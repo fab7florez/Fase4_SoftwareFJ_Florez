@@ -15,7 +15,7 @@ from logger import configurar_logger
 
 
 class Reserva(Entidad):
-    """Integra un cliente, un servicio, una duración y un estado, controlando su ciclo de vida."""
+    """Integra un cliente, un servicio, una duracion y un estado, controlando su ciclo de vida."""
 
     # Estados permitidos dentro del flujo de una reserva
     ESTADOS_VALIDOS = ("PENDIENTE", "CONFIRMADA", "CANCELADA", "PROCESADA")
@@ -26,19 +26,19 @@ class Reserva(Entidad):
             super().__init__(id_reserva)
         except ValueError as error_original:
             # Encadenamiento de excepciones: convertimos el ValueError en ErrorReserva
-            raise ErrorReserva(f"ID de reserva inválido: '{id_reserva}'.") from error_original
+            raise ErrorReserva(f"ID de reserva invalido: '{id_reserva}'.") from error_original
 
         # Validamos que el objeto cliente sea una instancia real de Cliente
         if not isinstance(cliente, Cliente):
-            raise ErrorReserva("La reserva debe estar asociada a un objeto Cliente válido.")
+            raise ErrorReserva("La reserva debe estar asociada a un objeto Cliente valido.")
 
         # Validamos que el objeto servicio herede de la clase abstracta Servicio
         if not isinstance(servicio, Servicio):
-            raise ErrorReserva("La reserva debe estar asociada a un objeto Servicio válido.")
+            raise ErrorReserva("La reserva debe estar asociada a un objeto Servicio valido.")
 
         # Validamos que la duración sea un número positivo
         if not isinstance(duracion_horas, (int, float)) or duracion_horas <= 0:
-            raise ErrorParametroInvalido(f"La duración de la reserva debe ser mayor a 0 (recibido: {duracion_horas}).")
+            raise ErrorParametroInvalido(f"La duracion de la reserva debe ser mayor a 0 (recibido: {duracion_horas}).")
 
         # Atributos encapsulados de la reserva
         self._cliente = cliente
@@ -63,7 +63,7 @@ class Reserva(Entidad):
         return self._costo_total
 
     def validar(self):
-        """Verifica disponibilidad del servicio y consistencia del cálculo de costo."""
+        """Verifica disponibilidad del servicio y consistencia del calculo de costo."""
         # Comprobamos si el servicio está disponible (puede lanzar ErrorServicioNoDisponible)
         self._servicio.verificar_disponibilidad()
         try:
@@ -79,10 +79,10 @@ class Reserva(Entidad):
         return True
 
     def confirmar(self):
-        """Cambia el estado de la reserva a CONFIRMADA si está PENDIENTE."""
+        """Cambia el estado de la reserva a CONFIRMADA si esta PENDIENTE."""
         if self._estado != "PENDIENTE":
             raise ErrorReserva(
-                f"Operación no permitida: no se puede confirmar la reserva '{self._id}' en estado {self._estado}."
+                f"Operacion no permitida: no se puede confirmar la reserva '{self._id}' en estado {self._estado}."
             )
         self._estado = "CONFIRMADA"
         return f"Reserva [{self._id}] confirmada exitosamente. Total a pagar: ${self._costo_total:,.2f}"
@@ -182,37 +182,37 @@ class SistemaSoftwareFJ:
             print(f"[OK] {reserva.describir()}")
         finally:
             # Bloque finally: siempre se ejecuta para dejar trazabilidad del intento de operación
-            self._logger.info(f"[AUDITORÍA] Intento de creación de reserva '{id_reserva}' finalizado.")
+            self._logger.info(f"[AUDITORIA] Intento de creación de reserva '{id_reserva}' finalizado.")
         return reserva
 
     def ejecutar_accion_reserva(self, reserva, accion, *args):
         """Ejecuta confirmar, cancelar o procesar sobre una reserva con manejo controlado de errores."""
         try:
             if reserva is None:
-                raise ErrorReserva("No se puede ejecutar una acción sobre una reserva inexistente (None).")
+                raise ErrorReserva("No se puede ejecutar una accion sobre una reserva inexistente (None).")
             # Obtenemos dinámicamente el método solicitado ('confirmar', 'cancelar' o 'procesar')
             metodo = getattr(reserva, accion)
             mensaje = metodo(*args)
         except (ErrorReserva, AttributeError) as e:
-            self._logger.error(f"[ACCIÓN FALLIDA] Acción '{accion}': {e}")
+            self._logger.error(f"[ACCION FALLIDA] Accion '{accion}': {e}")
             print(f"[ERROR] {e}")
             return False
         else:
-            self._logger.info(f"[ACCIÓN EXITOSA] {mensaje}")
+            self._logger.info(f"[ACCION EXITOSA] {mensaje}")
             print(f"[OK] {mensaje}")
             return True
         finally:
             # Garantiza el cierre ordenado del registro de la operación
-            self._logger.info(f"[AUDITORÍA] Cierre de operación '{accion}' en reserva.")
+            self._logger.info(f"[AUDITORIA] Cierre de operacion '{accion}' en reserva.")
 
     def mostrar_resumen(self):
         """Imprime el estado final del sistema demostrando estabilidad tras todos los errores."""
         print("\n" + "=" * 65)
         print("RESUMEN FINAL DEL SISTEMA - SOFTWARE FJ")
         print("=" * 65)
-        print(f"Clientes válidos registrados  : {len(self._clientes)}")
-        print(f"Servicios válidos registrados : {len(self._servicios)}")
-        print(f"Reservas válidas registradas  : {len(self._reservas)}")
+        print(f"Clientes validos registrados  : {len(self._clientes)}")
+        print(f"Servicios validos registrados : {len(self._servicios)}")
+        print(f"Reservas validas registradas  : {len(self._reservas)}")
         print("-" * 65)
         for reserva in self._reservas:
             print(" •", reserva.describir())

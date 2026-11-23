@@ -23,17 +23,17 @@ class Entidad(ABC):
 
     @abstractmethod
     def validar(self):
-        """Método abstracto que obliga a las clases hijas a validar su estado interno."""
+        """Metodo abstracto que obliga a las clases hijas a validar su estado interno."""
         pass
 
     @abstractmethod
     def describir(self):
-        """Método abstracto que obliga a las clases hijas a devolver su descripción textual."""
+        """Metodo abstracto que obliga a las clases hijas a devolver su descripción textual."""
         pass
 
 
 class Cliente(Entidad):
-    """Representa un cliente de Software FJ con encapsulación y validación de datos personales."""
+    """Representa un cliente de Software FJ con encapsulacien y validacien de datos personales."""
 
     def __init__(self, id_cliente, nombre, correo, telefono):
         # Inicializamos el ID llamando al constructor de la clase padre Entidad
@@ -41,7 +41,7 @@ class Cliente(Entidad):
             super().__init__(id_cliente)
         except ValueError as error_original:
             # Encadenamos el error base en nuestra excepción personalizada de cliente
-            raise ErrorValidacionCliente(f"ID de cliente inválido: '{id_cliente}'.") from error_original
+            raise ErrorValidacionCliente(f"ID de cliente invelido: '{id_cliente}'.") from error_original
 
         # Inicializamos los atributos privados usando los setters para garantizar validación inmediata
         self.__nombre = None
@@ -71,7 +71,7 @@ class Cliente(Entidad):
 
     @property
     def correo(self):
-        """Retorna el correo electrónico del cliente."""
+        """Retorna el correo electronico del cliente."""
         return self.__correo
 
     @correo.setter
@@ -80,28 +80,28 @@ class Cliente(Entidad):
         # Patrón estándar para validar estructura usuario@dominio.extension
         patron_correo = r"^[\w\.-]+@[\w\.-]+\.\w{2,}$"
         if not isinstance(valor, str) or not re.match(patron_correo, valor.strip()):
-            raise ErrorValidacionCliente(f"El correo electrónico '{valor}' no tiene un formato válido.")
+            raise ErrorValidacionCliente(f"El correo electronico '{valor}' no tiene un formato valido.")
         self.__correo = valor.strip().lower()
 
     @property
     def telefono(self):
-        """Retorna el número telefónico del cliente."""
+        """Retorna el número telefonico del cliente."""
         return self.__telefono
 
     @telefono.setter
     def telefono(self, valor):
-        """Valida que el teléfono contenga solo dígitos y tenga entre 7 y 15 caracteres."""
+        """Valida que el telefono contenga solo digitos y tenga entre 7 y 15 caracteres."""
         # Convertimos a texto limpio y validamos que sean únicamente dígitos
         if not isinstance(valor, str) or not valor.strip().isdigit() or not (7 <= len(valor.strip()) <= 15):
-            raise ErrorValidacionCliente(f"El teléfono '{valor}' debe contener entre 7 y 15 dígitos numéricos.")
+            raise ErrorValidacionCliente(f"El teléfono '{valor}' debe contener entre 7 y 15 digitos numéricos.")
         self.__telefono = valor.strip()
 
     def validar(self):
-        """Verifica que todos los campos obligatorios del cliente estén correctamente cargados."""
+        """Verifica que todos los campos obligatorios del cliente esten correctamente cargados."""
         if not all([self._id, self.__nombre, self.__correo, self.__telefono]):
             raise ErrorValidacionCliente("Faltan datos obligatorios en el registro del cliente.")
         return True
 
     def describir(self):
-        """Devuelve una representación legible con los datos del cliente."""
+        """Devuelve una representacion legible con los datos del cliente."""
         return f"Cliente [{self._id}] {self.__nombre} | Correo: {self.__correo} | Tel: {self.__telefono}"
