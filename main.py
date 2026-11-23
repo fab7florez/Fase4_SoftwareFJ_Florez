@@ -88,7 +88,7 @@ def ejecutar_simulacion():
 
     # Se muestra el resumen final comprobando que el sistema siguió operando hasta el final
     sistema.mostrar_resumen()
-    print("\nRevisa el archivo 'registro_software_fj.log' generado en la carpeta del proyecto.")
+    print("\nSe crea 'registro_software_fj.log' generado en la carpeta del proyecto.")
 
 
 if __name__ == "__main__":

@@ -82,3 +82,31 @@
 2026-11-22 16:00:52,991 | ERROR | [ACCIÓN FALLIDA] Acción 'procesar': No se puede procesar la reserva 'RES-002': debe estar CONFIRMADA (estado actual: CANCELADA).
 2026-11-22 16:00:52,991 | INFO | [AUDITORÍA] Cierre de operación 'procesar' en reserva.
 2026-11-22 16:00:52,993 | INFO | Resumen final -> Clientes: 2, Servicios: 4, Reservas: 2.
+2026-11-22 20:24:26,124 | INFO | Sistema Software FJ inicializado correctamente.
+2026-11-22 20:24:26,125 | INFO | [CLIENTE REGISTRADO] Cliente [CLI-001] Laura Martínez | Correo: laura.martinez@empresa.com | Tel: 3104567890
+2026-11-22 20:24:26,125 | INFO | [CLIENTE REGISTRADO] Cliente [CLI-002] Carlos Gómez | Correo: carlos.gomez@correo.co | Tel: 3209876543
+2026-11-22 20:24:26,125 | ERROR | [CLIENTE FALLIDO] El correo electronico 'pedro_sin_arroba.com' no tiene un formato valido.
+2026-11-22 20:24:26,125 | ERROR | [CLIENTE FALLIDO] El teléfono '300ABC999' debe contener entre 7 y 15 digitos numéricos.
+2026-11-22 20:24:26,127 | INFO | [SERVICIO REGISTRADO] Sala [SRV-S01] Sala Ejecutiva Norte | Capacidad: 30 personas | Tarifa: $120,000.00/h | Estado: Disponible
+2026-11-22 20:24:26,127 | INFO | [SERVICIO REGISTRADO] Equipo [SRV-E01] Kit Videoconferencia 4K | Unidades: 2 | Deposito: $50,000.00 | Tarifa: $45,000.00/h | Estado: Disponible
+2026-11-22 20:24:26,127 | INFO | [SERVICIO REGISTRADO] Asesoria [SRV-A01] Auditoria de Seguridad | Area: Ciberseguridad (Experto) | Tarifa: $180,000.00/h | Estado: Disponible
+2026-11-22 20:24:26,127 | INFO | [SERVICIO REGISTRADO] Sala [SRV-S02] Auditorio Principal | Capacidad: 100 personas | Tarifa: $300,000.00/h | Estado: No disponible
+2026-11-22 20:24:26,127 | ERROR | [SERVICIO FALLIDO] La capacidad de la sala debe ser un entero entre 2 y 200 personas (recibido: -5).
+2026-11-22 20:24:26,128 | ERROR | [SERVICIO FALLIDO] Nivel 'MaestroSupremo' invalido. Niveles permitidos: ('Basico', 'Intermedio', 'Experto').
+2026-11-22 20:24:26,128 | INFO | [RESERVA CREADA] Reserva [RES-001] | Cliente: Laura Martínez | Servicio: Sala Ejecutiva Norte | Duración: 3h | Total: $443,394.00 | Estado: PENDIENTE
+2026-11-22 20:24:26,128 | INFO | [AUDITORIA] Intento de creación de reserva 'RES-001' finalizado.
+2026-11-22 20:24:26,129 | INFO | [ACCION EXITOSA] Reserva [RES-001] confirmada exitosamente. Total a pagar: $443,394.00
+2026-11-22 20:24:26,129 | INFO | [AUDITORIA] Cierre de operacion 'confirmar' en reserva.
+2026-11-22 20:24:26,129 | INFO | [ACCION EXITOSA] Reserva [RES-001] procesada y facturada por $443,394.00.
+2026-11-22 20:24:26,129 | INFO | [AUDITORIA] Cierre de operacion 'procesar' en reserva.
+2026-11-22 20:24:26,129 | INFO | [RESERVA CREADA] Reserva [RES-002] | Cliente: Carlos Gómez | Servicio: Kit Videoconferencia 4K | Duración: 4h | Total: $463,505.00 | Estado: PENDIENTE
+2026-11-22 20:24:26,129 | INFO | [AUDITORIA] Intento de creación de reserva 'RES-002' finalizado.
+2026-11-22 20:24:26,130 | INFO | [ACCION EXITOSA] Reserva [RES-002] cancelada. Motivo: Cambio de fecha del evento
+2026-11-22 20:24:26,130 | INFO | [AUDITORIA] Cierre de operacion 'cancelar' en reserva.
+2026-11-22 20:24:26,130 | ERROR | [RESERVA FALLIDA] El servicio 'Auditorio Principal' (SRV-S02) no esta disponible.
+2026-11-22 20:24:26,130 | INFO | [AUDITORIA] Intento de creación de reserva 'RES-003' finalizado.
+2026-11-22 20:24:26,131 | ERROR | [RESERVA FALLIDA] No se pudo calcular el costo de la reserva 'RES-004'. | Causa original: El descuento debe estar entre 0% y 50% (recibido: 80%).
+2026-11-22 20:24:26,131 | INFO | [AUDITORIA] Intento de creación de reserva 'RES-004' finalizado.
+2026-11-22 20:24:26,131 | ERROR | [ACCION FALLIDA] Accion 'procesar': No se puede procesar la reserva 'RES-002': debe estar CONFIRMADA (estado actual: CANCELADA).
+2026-11-22 20:24:26,132 | INFO | [AUDITORIA] Cierre de operacion 'procesar' en reserva.
+2026-11-22 20:24:26,133 | INFO | Resumen final -> Clientes: 2, Servicios: 4, Reservas: 2.
